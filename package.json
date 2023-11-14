@@ -1,0 +1,28 @@
+{
+  "name": "express-session-mysql",
+  "version": "1.0.0",
+  "description": "How to use Express Session with MySQL Guide",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --trace-warnings --watch --env-file .env  src/index.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcelobettini/express-session-mysql.git"
+  },
+  "author": "Marcelo Bettini",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcelobettini/express-session-mysql/issues"
+  },
+  "homepage": "https://github.com/marcelobettini/express-session-mysql#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-mysql-session": "^3.0.0",
+    "express-session": "^1.17.3",
+    "mysql2": "^3.6.3"
+  }
+}

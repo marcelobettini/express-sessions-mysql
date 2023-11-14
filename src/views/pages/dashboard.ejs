@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <%- include("../partials/head.ejs")%>
+</head>
+
+<body>
+  <div class="container">
+    <% if(user) {%>
+      <%- include('../partials/navbar-with-user') %>
+        <%}else {%>
+
+          <%- include('../partials/navbar') %>
+            <%}%>
+              <p><%- title%></p>
+              <% if(user){%>
+                <p>Usuario Registrado: <%- user?.email%></p>
+                <% } else {%>
+                  <p>No hay usuario</p>
+                  <%}%>
+
+
+  </div>
+</body>
+
+</html>

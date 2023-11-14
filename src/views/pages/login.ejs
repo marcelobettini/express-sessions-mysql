@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <%- include("../partials/head.ejs")%>
+</head>
+
+<body>
+  <div class="container">
+    <%- include('../partials/navbar') %>
+      <p><%- title%></p>
+      <form action='/login' method='post'>
+        <label for="email">Email</label>
+        <input type="email" name='email' id='email' placeholder='enter a valid email...'
+          title='Escriba un email válido.' pattern="^[\w.\-]+@([\w\-]+\.)+[\w\-]{2,}$" required>
+        <label for="pass">Password</label>
+        <input type="password" name="pass" id="pass" minlength='8' maxlength='20'
+          placeholder='8 to 20 characters, numbers, letters, no blank spaces...' title='Solo letras y números'
+          pattern="^[a-zA-Z0-9]+$" required>
+        <input type="submit" value="Submit">
+      </form>
+  </div>
+</body>
+
+</html>
