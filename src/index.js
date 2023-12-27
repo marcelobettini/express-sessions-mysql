@@ -1,22 +1,29 @@
 const express = require("express");
-const path = require("path");
 const session = require("express-session");
 const mysqlStore = require("express-mysql-session")(session);
-const loginRouter = require("./routes/loginRouter.js");
-const registerRouter = require("./routes/registerRouter.js");
-const usersRouter = require("./routes/usersRouter.js");
+const cookieParser = require("cookie-parser");
+const path = require("path");
+const moviesRt = require("./features/movies/moviesRt.js");
+const homeRt = require("./features/home/homeRt.js");
+const authRt = require("./features/auth/authRt.js");
+
 const app = express();
 const PORT = process.env.PORT ?? 3000;
-const IS_IN_PROD = process.env.NODE_ENV === "production";
+const IS_IN_PROD = process.env.NODE_ENV === "production"; //Bool, if secure->https cert required
 const ONE_MINUTE = 1000 * 60;
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
-const isAuth = require("./middlewares/isAuth.js");
-const isLoginRegister = require("./middlewares/isLoginRegister.js");
 app.set("views", path.resolve(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve(__dirname, "public")));
+app.use(cookieParser());
+app.use((req, res, next) => {
+  res.locals.currentRoute = req.path;
+  res.locals.user = req.session || "";
+  /* Express proporciona el objeto res.locals de forma predeterminada para cada solicitud. No se necesita configuración adicional para utilizarlo. Los datos que se almacenan en res.locals son accesibles a lo largo de la solicitud y específicos para esa solicitud.*/
+  next();
+});
 
 const options = {
   connectionLimit: 10,
@@ -31,7 +38,7 @@ const options = {
 const sessionStore = new mysqlStore(options);
 app.use(
   session({
-    // name: process.env.SESSION_NAME, coonnect.sid by default
+    // name: process.env.SESSION_NAME, connect.sid by default
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
@@ -45,19 +52,9 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.render("pages/index", { title: "Home Page", user: req.session.user });
-});
-app.get("/dashboard", isAuth, (req, res) => {
-  res.render("pages/dashboard", {
-    title: "Dashboard Page",
-    user: req.session.user,
-  });
-});
-
-app.use("/login", isLoginRegister, loginRouter);
-app.use("/register", isLoginRegister, registerRouter);
-app.use("/users", usersRouter);
+app.get("/", homeRt);
+app.use("/auth", authRt);
+app.use("/movies", moviesRt);
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);

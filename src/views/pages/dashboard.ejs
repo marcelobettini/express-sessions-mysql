@@ -2,24 +2,14 @@
 <html lang="es">
 
 <head>
-  <%- include("../partials/head.ejs")%>
+  <%- include("../partials/head")%>
 </head>
 
 <body>
   <div class="container">
-    <% if(user) {%>
-      <%- include('../partials/navbar-with-user') %>
-        <%}else {%>
+    <%- include('../partials/navbar') %>
 
-          <%- include('../partials/navbar') %>
-            <%}%>
-              <p><%- title%></p>
-              <% if(user){%>
-                <p>Usuario Registrado: <%- user?.email%></p>
-                <% } else {%>
-                  <p>No hay usuario</p>
-                  <%}%>
-
+      <h2>Dashboard</h2>
 
   </div>
 </body>
