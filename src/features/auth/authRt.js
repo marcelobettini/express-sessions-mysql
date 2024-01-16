@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const {
   loginValidationRules,
-  handleLoginValidation,
   registerValidationRules,
+  handleLoginValidation,
   handleRegisterValidation,
 } = require("../../middlewares/formValidator.js");
 const authCt = require("./authCt.js");

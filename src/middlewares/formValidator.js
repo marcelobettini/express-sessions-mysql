@@ -19,13 +19,11 @@ const loginValidationRules = [
 const registerValidationRules = [
   check("name")
     .exists()
-    .isAlpha()
-    .withMessage("Only letters and spaces")
-    .withMessage("Must be a valid email")
+    .matches(/^[A-Za-z\s]+$/) // Allows letters and spaces
+    .withMessage("Only letters and spaces are allowed")
     .notEmpty()
     .withMessage("Field is required")
     .escape(),
-  ,
   check("email")
     .exists()
     .isEmail()
@@ -41,11 +39,19 @@ const registerValidationRules = [
     .withMessage("Field is required")
     .trim()
     .escape(),
+  check("repeatPassword")
+    .exists()
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error();
+      }
+      return true;
+    })
+    .withMessage("Passwords must match"),
 ];
 
 const handleLoginValidation = (req, res, next) => {
   const errors = validationResult(req);
-
   if (errors.isEmpty()) {
     next();
   } else {
@@ -55,7 +61,6 @@ const handleLoginValidation = (req, res, next) => {
 };
 const handleRegisterValidation = (req, res, next) => {
   const errors = validationResult(req);
-
   if (errors.isEmpty()) {
     next();
   } else {

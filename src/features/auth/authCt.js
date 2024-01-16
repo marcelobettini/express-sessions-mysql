@@ -25,7 +25,7 @@ const auth = {
     /* guardar la sesión antes de redirigir, porque el procedimiento es
     async y puede ocurrir que al llegar al sitio de redirección
     no se muestren los datos de sesión aún */
-    req.session.save(err => {
+    req.session.save((err) => {
       if (err) {
         console.error(err);
       }
@@ -33,7 +33,7 @@ const auth = {
     });
   },
   logout: (req, res) => {
-    req.session.destroy(err => {
+    req.session.destroy((err) => {
       if (err) {
         console.error("Error destroying session:", err);
       } else {
@@ -46,6 +46,7 @@ const auth = {
     res.render("pages/register", { prevValues: {}, errors: [] });
   },
   registerProcess: async (req, res) => {
+    console.log("Hit register process");
     const { name, email, password } = req.body;
     const pass = await passHash.encrypt(password);
     const newUser = {
@@ -54,6 +55,7 @@ const auth = {
       email,
       password: pass,
     };
+    console.log(newUser);
     await usersMd.addOne(newUser);
     res.send("ok");
   },
